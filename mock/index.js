@@ -6,7 +6,7 @@ import table from './table'
 
 const mocks = [
   ...user,
-  ...table
+  ...table,
 ]
 
 // for front mock
@@ -36,7 +36,7 @@ export function mockXHR() {
         result = respond({
           method: type,
           body: JSON.parse(body),
-          query: param2Obj(url)
+          query: param2Obj(url),
         })
       } else {
         result = respond
@@ -57,7 +57,7 @@ const responseFake = (url, type, respond) => {
     type: type || 'get',
     response(req, res) {
       res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
-    }
+    },
   }
 }
 

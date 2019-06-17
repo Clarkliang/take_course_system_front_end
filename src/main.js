@@ -25,7 +25,7 @@ import '@/permission' // permission control
  */
 import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
-    mockXHR()
+  mockXHR()
 }
 
 // set ElementUI lang to EN
@@ -34,8 +34,8 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 
 new Vue({
-    el: '#app',
-    router,
-    store,
-    render: h => h(App),
+  el: '#app',
+  router,
+  store,
+  render: h => h(App),
 })

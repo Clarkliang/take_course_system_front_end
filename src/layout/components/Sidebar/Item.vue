@@ -5,12 +5,12 @@ export default {
   props: {
     icon: {
       type: String,
-      default: ''
+      default: '',
     },
     title: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   render(h, context) {
     const { icon, title } = context.props
@@ -24,6 +24,6 @@ export default {
       vnodes.push(<span slot='title'>{(title)}</span>)
     }
     return vnodes
-  }
+  },
 }
 </script>

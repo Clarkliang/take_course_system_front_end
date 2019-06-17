@@ -103,8 +103,8 @@ module.exports = {
       '^(err|error)$'
     ],
     indent: [
-      4,
-      4,
+      2,
+      2,
       {
         SwitchCase: 1
       }
