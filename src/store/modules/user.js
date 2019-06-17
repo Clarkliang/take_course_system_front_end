@@ -7,6 +7,7 @@ const state = {
   name: '',
   avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
   userInfo: null,
+  roles: [],
 }
 
 const mutations = {
@@ -21,6 +22,9 @@ const mutations = {
   },
   SET_USERINFO: (state, userInfo) => {
     state.userInfo = userInfo
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   },
 }
 
@@ -66,8 +70,12 @@ const actions = {
           userInfo.teacherInfo = infoData.teacherInfo
         }
 
+        if (roleInfo) {
+          commit('SET_ROLES', [roleInfo.name])
+        }
+
         commit('SET_USERINFO', userInfo)
-        resolve(data)
+        resolve(userInfo)
       }).catch(error => {
         reject(error)
       })
@@ -79,6 +87,7 @@ const actions = {
     return new Promise((resolve) => {
       const newToken = tokenData.token
       commit('SET_TOKEN', newToken)
+      commit('SET_ROLES', [])
       if (tokenData.expireMillisecond) {
         setToken(newToken, {
           expireMillisecond: tokenData.expireMillisecond,
@@ -93,15 +102,15 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_USERINFO', null)
-        removeToken()
-        resetRouter()
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      // logout(state.token).then(() => {
+      commit('SET_TOKEN', '')
+      commit('SET_USERINFO', null)
+      removeToken()
+      resetRouter()
+      resolve()
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 
@@ -109,6 +118,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
       commit('SET_USERINFO', null)
       removeToken()
       resolve()

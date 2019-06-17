@@ -32,10 +32,15 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else {
         try {
-          // get user info
-          await store.dispatch('user/getInfo')
+          // 获取用户信息
+          const { roleInfo } = await store.dispatch('user/getInfo')
 
-          next()
+          if (roleInfo) {
+            const accessRoutes = await store.dispatch('permission/generateRoutes', [roleInfo.name])
+            router.addRoutes(accessRoutes)
+          }
+
+          next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
