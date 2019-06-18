@@ -27,7 +27,7 @@
           background
           layout="total, sizes, prev, pager, next, jumper"
           :current-page="paginationData.currentPage"
-          :page-size="10"
+          :page-size="paginationData.pageSize"
           :total="paginationData.total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -91,7 +91,6 @@ export default {
         this.paginationData.total = response.data.count
         this.$message.success('获取登录日志成功！')
       } catch (err) {
-        console.log(err)
         if (!err.data) {
           this.$message.error('获取登录日志失败，请重试！')
           return

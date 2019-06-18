@@ -58,40 +58,40 @@ export const constantRoutes = [
     ],
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' },
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' },
-      },
-    ],
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/table',
+  //   name: 'Example',
+  //   meta: { title: 'Example', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'table',
+  //       name: 'Table',
+  //       component: () => import('@/views/table/index'),
+  //       meta: { title: 'Table', icon: 'table' },
+  //     },
+  //     {
+  //       path: 'tree',
+  //       name: 'Tree',
+  //       component: () => import('@/views/tree/index'),
+  //       meta: { title: 'Tree', icon: 'tree' },
+  //     },
+  //   ],
+  // },
 
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' },
-      },
-    ],
-  },
+  // {
+  //   path: '/form',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Form',
+  //       component: () => import('@/views/form/index'),
+  //       meta: { title: 'Form', icon: 'form' },
+  //     },
+  //   ],
+  // },
 ]
 
 /**
@@ -103,7 +103,7 @@ export const asyncRoutes = [
     path: '/UserManage',
     component: Layout,
     redirect: '/UserManage/UserInformation',
-    name: 'UserInformation',
+    name: 'UserManage',
     meta: {
       title: '用户管理',
       icon: 'user',
@@ -153,6 +153,42 @@ export const asyncRoutes = [
           icon: 'peoples',
           roles: ['教务员', '系统管理员'],
         },
+      },
+      {
+        path: 'AllTeacherManage',
+        component: () =>
+                    import('@/views/userManage/allTeacherManage.vue'),
+        name: 'AllTeacherManage',
+        meta: {
+          title: '所有老师管理',
+          icon: 'peoples',
+          roles: ['教务员', '系统管理员'],
+        },
+      },
+    ],
+  },
+  {
+    path: '/BaseInfoManage',
+    component: Layout,
+    redirect: '/BaseInfoManage/UserInformation',
+    name: 'BaseInfoManage',
+    meta: {
+      title: '基础信息管理',
+      icon: 'example',
+      roles: ['教务员', '系统管理员'],
+    },
+    children: [
+      {
+        path: 'TitleManage',
+        component: () => import('@/views/baseInfoManage/titleManage'),
+        name: 'TitleManage',
+        meta: { title: '职称信息管理', icon: 'documentation' },
+      },
+      {
+        path: 'CollegeManage',
+        component: () => import('@/views/baseInfoManage/collegeManage'),
+        name: 'CollegeManage',
+        meta: { title: '学院管理', icon: 'documentation' },
       },
     ],
   },
