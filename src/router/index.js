@@ -47,12 +47,15 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' },
-    }],
+    meta: { title: '主页' },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '主页', icon: 'dashboard' },
+      },
+    ],
   },
 
   {
@@ -89,78 +92,6 @@ export const constantRoutes = [
       },
     ],
   },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested',
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' },
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' },
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' },
-  //             },
-  //           ],
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' },
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       meta: { title: 'menu2' },
-  //     },
-  //   ],
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' },
-  //     },
-  //   ],
-  // },
-
-  // // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true },
 ]
 
 /**
@@ -169,70 +100,59 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/nested',
+    path: '/UserManage',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/UserManage/UserInformation',
+    name: 'UserInformation',
     meta: {
-      title: 'Nested',
-      icon: 'nested',
+      title: '用户管理',
+      icon: 'user',
     },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' },
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' },
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' },
-              },
-            ],
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' },
-          },
-        ],
+        path: 'UserInformation',
+        component: () => import('@/views/userManage/userInformation'),
+        name: 'UserInformation',
+        meta: { title: '用户信息', icon: 'user' },
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' },
+        path: 'UpdatePassword',
+        component: () => import('@/views/userManage/updatePassword'),
+        name: 'UpdatePassword',
+        meta: {
+          title: '修改密码',
+          icon: 'edit',
+        },
       },
-    ],
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' },
+        path: 'LoginRecords',
+        component: () => import('@/views/userManage/loginRecords.vue'),
+        name: 'LoginRecords',
+        meta: {
+          title: '登录日志',
+          icon: 'documentation',
+        },
+      },
+      {
+        path: 'UpdatePasswordRecords',
+        component: () =>
+                    import('@/views/userManage/updatePasswordRecords.vue'),
+        name: 'UpdatePasswordRecords',
+        meta: {
+          title: '修改密码日志',
+          icon: 'documentation',
+        },
+      },
+      {
+        path: 'AllStudentManage',
+        component: () =>
+                    import('@/views/userManage/allStudentManage.vue'),
+        name: 'AllStudentManage',
+        meta: {
+          title: '所有学生管理',
+          icon: 'peoples',
+          roles: ['教务员', '系统管理员'],
+        },
       },
     ],
   },
@@ -241,11 +161,12 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true },
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes,
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+  })
 
 const router = createRouter()
 

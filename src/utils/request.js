@@ -99,7 +99,7 @@ service.interceptors.response.use(
     console.log('request err: ' + error) // for debug
 
     // 请求超时
-    if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
+    if (error.code === 'ECONNABORTED' || error.message.indexOf('timeout') !== -1) {
       Notification({
         message: '请求超时，请重试！',
         type: 'error',

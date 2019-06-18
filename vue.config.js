@@ -23,7 +23,7 @@ module.exports = {
      */
   publicPath: '',
 
-  outputDir: undefined,
+  outputDir: 'take_course',
   assetsDir: 'static',
   lintOnSave: undefined,
   productionSourceMap: false,
