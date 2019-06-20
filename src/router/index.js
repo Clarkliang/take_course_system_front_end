@@ -121,7 +121,7 @@ export const asyncRoutes = [
         name: 'UpdatePassword',
         meta: {
           title: '修改密码',
-          icon: 'edit',
+          icon: 'password',
         },
       },
       {
@@ -189,6 +189,51 @@ export const asyncRoutes = [
         component: () => import('@/views/baseInfoManage/collegeManage'),
         name: 'CollegeManage',
         meta: { title: '学院管理', icon: 'documentation' },
+      },
+      {
+        path: 'ProfessionManage',
+        component: () =>
+                    import('@/views/baseInfoManage/professionManage'),
+        name: 'ProfessionManage',
+        meta: { title: '专业管理', icon: 'documentation' },
+      },
+      {
+        path: 'SchoolYearManage',
+        component: () =>
+                    import('@/views/baseInfoManage/schoolYearManage'),
+        name: 'SchoolYearManage',
+        meta: { title: '学年管理', icon: 'documentation' },
+      },
+      {
+        path: 'TermManage',
+        component: () => import('@/views/baseInfoManage/termManage'),
+        name: 'TermManage',
+        meta: { title: '学期管理', icon: 'documentation' },
+      },
+    ],
+  },
+  {
+    path: '/TakeCourseManage',
+    component: Layout,
+    redirect: '/TakeCourseManage/courseManage',
+    name: 'TakeCourseManage',
+    meta: {
+      title: '选课管理',
+      icon: 'example',
+      roles: ['教务员', '系统管理员'],
+    },
+    children: [
+      {
+        path: 'CourseManage',
+        component: () => import('@/views/takeCourseManage/courseManage'),
+        name: 'CourseManage',
+        meta: { title: '课程管理', icon: 'documentation' },
+      },
+      {
+        path: 'TakeCourseEventManage',
+        component: () => import('@/views/takeCourseManage/takeCourseEventManage'),
+        name: 'TakeCourseEventManage',
+        meta: { title: '选课场次管理', icon: 'documentation' },
       },
     ],
   },

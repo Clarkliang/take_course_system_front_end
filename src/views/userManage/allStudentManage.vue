@@ -118,7 +118,7 @@
                 :key="index"
                 :label="`${item.name} - ${item.college.name}`"
                 :value="item.id"
-              ></el-option>
+              />
             </el-select>
           </el-form-item>
         </el-form>
@@ -140,7 +140,6 @@ import {
   putAllUsersPassword,
 } from '@/api/allUsers'
 import { getProfessions } from '@/api/baseData'
-import { Promise } from 'q'
 
 export default {
   name: 'AllStudentManage',

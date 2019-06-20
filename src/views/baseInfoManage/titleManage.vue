@@ -38,7 +38,9 @@ export default {
   methods: {
     async refreshTitleData() {
       try {
-        const { data: response } = await getTitle()
+        const { data: response } = await getTitle({
+          disablePagination: 1,
+        })
         this.titleData = response.data.rows
         this.$message.success('获取职称信息成功！')
       } catch (err) {
@@ -55,7 +57,7 @@ export default {
       this.loading = false
     },
     async addBtnClick() {
-      const { value: name } = this.$prompt('名称', '添加职称', {
+      this.$prompt('名称', '添加职称', {
         inputValidator(val) {
           if (!val) {
             return '请输入名称'
@@ -137,7 +139,9 @@ export default {
           }
         }
         this.loading = false
-      } catch (err) {}
+      } catch (err) {
+        this.$message.warning('取消删除操作')
+      }
     },
   },
 }

@@ -19,10 +19,10 @@
           <div class="ipt-box">
             <el-select size="small" width="100" v-model="filterForm.titleId">
               <el-option label value></el-option>
-              <el-option label="助教" value="a9dd6faa-747a-11e9-955c-0242ac110002"></el-option>
-              <el-option label="讲师" value="b88cc16b-747a-11e9-955c-0242ac110002"></el-option>
-              <el-option label="副教授" value="c058f174-747a-11e9-955c-0242ac110002"></el-option>
-              <el-option label="教授" value="c938d759-747a-11e9-955c-0242ac110002"></el-option>
+              <el-option label="助教" value="a9dd6faa-747a-11e9-955c-0242ac110002"/>
+              <el-option label="讲师" value="b88cc16b-747a-11e9-955c-0242ac110002"/>
+              <el-option label="副教授" value="c058f174-747a-11e9-955c-0242ac110002"/>
+              <el-option label="教授" value="c938d759-747a-11e9-955c-0242ac110002"/>
             </el-select>
           </div>
         </div>
@@ -60,7 +60,12 @@
       </el-footer>
     </el-container>
     <!-- 添加老师对话框开始 -->
-    <el-dialog title="添加老师" width="60px;" :visible.sync="addTeacherDiagVisible" v-loading="addTeacherDiagLoading">
+    <el-dialog
+      title="添加老师"
+      width="60px;"
+      :visible.sync="addTeacherDiagVisible"
+      v-loading="addTeacherDiagLoading"
+    >
       <div class="add-teacher-form-box">
         <el-form
           ref="addTeacherForm"
@@ -70,6 +75,7 @@
         >
           <el-form-item label="工号" prop="number">
             <el-input size="small" v-model="addTeacherForm.number"/>
+            <el-button size="small" @click="generateNumber">随机生成</el-button>
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input
@@ -89,8 +95,8 @@
               style="width: 100%"
               v-model="addTeacherForm.sex"
             >
-              <el-option label="男" value="0"></el-option>
-              <el-option label="女" value="1"></el-option>
+              <el-option label="男" value="0"/>
+              <el-option label="女" value="1"/>
             </el-select>
           </el-form-item>
           <el-form-item label="职称" prop="titleId">
@@ -119,9 +125,9 @@
 
 <script>
 import { parseTime } from '@/utils'
+import { getShortUuid } from '@/api/util'
 import { getAllTeachers, postTeacher, allUsersPassword } from '@/api/allUsers'
 import { getProfessions } from '@/api/baseData'
-import { Promise } from 'q'
 
 export default {
   name: 'AllTeacherManage',
@@ -323,6 +329,21 @@ export default {
           }
         }
       })
+    },
+    async generateNumber() {
+      this.addTeacherDiagLoading = true
+      try {
+        const { data: response } = await getShortUuid()
+        const shortUuid = response.data
+        this.addTeacherForm.number = shortUuid
+      } catch (err) {
+        if (err.data && err.data.errorMessage) {
+          this.$message.error(err.data.errorMessage)
+        } else {
+          this.$message.error('随机生成工号失败，请重试！')
+        }
+      }
+      this.addTeacherDiagLoading = false
     },
   },
 }

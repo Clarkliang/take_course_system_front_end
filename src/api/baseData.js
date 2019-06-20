@@ -12,6 +12,30 @@ export function getProfessions(params) {
   })
 }
 
+export function postProfessions(data) {
+  return request({
+    url: '/professions',
+    method: 'post',
+    data,
+  })
+}
+
+export function putProfessions(data) {
+  return request({
+    url: '/professions',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteProfessions(data) {
+  return request({
+    url: '/professions',
+    method: 'delete',
+    data,
+  })
+}
+
 export function getTitle(params) {
   return request({
     url: '/title',
@@ -71,6 +95,70 @@ export function putCollege(data) {
 export function deleteCollege(data) {
   return request({
     url: '/colleges',
+    method: 'delete',
+    data,
+  })
+}
+
+export function getAllSchoolYears(params) {
+  return request({
+    url: '/allSchoolYears',
+    method: 'get',
+    params,
+  })
+}
+
+export function postSchoolYear(data) {
+  return request({
+    url: '/schoolYear',
+    method: 'post',
+    data,
+  })
+}
+
+export function putSchoolYear(data) {
+  return request({
+    url: '/schoolYear',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteSchoolYear(data) {
+  return request({
+    url: '/schoolYear',
+    method: 'delete',
+    data,
+  })
+}
+
+export function getAllTerms(params) {
+  return request({
+    url: '/allTerms',
+    method: 'get',
+    params,
+  })
+}
+
+export function postTerm(data) {
+  return request({
+    url: '/term',
+    method: 'post',
+    data,
+  })
+}
+
+export function putTerm(data) {
+  return request({
+    url: '/term',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteTerm(data) {
+  return request({
+    url: '/term',
     method: 'delete',
     data,
   })
