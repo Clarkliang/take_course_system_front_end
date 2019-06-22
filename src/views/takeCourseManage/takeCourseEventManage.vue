@@ -61,7 +61,7 @@
               type="primary"
               size="small"
               icon="el-icon-refresh"
-              @click="step2RefreshData"
+              @click="step2RefreshBtnClick"
             >刷新</el-button>
           </el-form-item>
         </el-form>
@@ -433,7 +433,7 @@ export default {
         4: '四',
         5: '五',
         6: '六',
-        7: '天',
+        7: '日',
       },
       numberMap: {
         1: '一',
@@ -540,7 +540,6 @@ export default {
       }
     },
     getCourseParams() {
-      // debugger
       return {
         page: this.step2PaginationData.currentPage,
         row: this.step2PaginationData.pageSize,
@@ -712,9 +711,12 @@ export default {
     },
     async step2RefreshData() {
       this.loading = true
-      this.step2PaginationData.currentPage = 1
       this.refreshCourseData()
       this.loading = false
+    },
+    async step2RefreshBtnClick() {
+      this.step2PaginationData.currentPage = 1
+      await this.step2RefreshData()
     },
     step2BackBtnClick() {
       this.step = 1

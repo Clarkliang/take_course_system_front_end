@@ -22,8 +22,8 @@
     <!-- 添加学年对话框开始 -->
     <el-dialog
       title="添加学年"
-      :visible.sync="addSchoolYearDiag.visible"
       v-loading="addSchoolYearDiag.loading"
+      :visible.sync="addSchoolYearDiag.visible"
       @closed="addSchoolYearDiagClosed"
     >
       <div class="diag-form-box">

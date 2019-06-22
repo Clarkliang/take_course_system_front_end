@@ -210,12 +210,24 @@ export const asyncRoutes = [
         name: 'TermManage',
         meta: { title: '学期管理', icon: 'documentation' },
       },
+      {
+        path: 'TeachingBuildingManage',
+        component: () => import('@/views/baseInfoManage/teachingBuildingManage'),
+        name: 'TeachingBuildingManage',
+        meta: { title: '教学楼管理', icon: 'documentation' },
+      },
+      {
+        path: 'ClassroomManage',
+        component: () => import('@/views/baseInfoManage/classroomManage'),
+        name: 'ClassroomManage',
+        meta: { title: '课室管理', icon: 'documentation' },
+      },
     ],
   },
   {
     path: '/TakeCourseManage',
     component: Layout,
-    redirect: '/TakeCourseManage/courseManage',
+    redirect: '/TakeCourseManage/CourseManage',
     name: 'TakeCourseManage',
     meta: {
       title: '选课管理',
@@ -225,15 +237,58 @@ export const asyncRoutes = [
     children: [
       {
         path: 'CourseManage',
-        component: () => import('@/views/takeCourseManage/courseManage'),
+        component: () =>
+                    import('@/views/takeCourseManage/courseManage'),
         name: 'CourseManage',
         meta: { title: '课程管理', icon: 'documentation' },
       },
       {
         path: 'TakeCourseEventManage',
-        component: () => import('@/views/takeCourseManage/takeCourseEventManage'),
+        component: () =>
+                    import('@/views/takeCourseManage/takeCourseEventManage'),
         name: 'TakeCourseEventManage',
         meta: { title: '选课场次管理', icon: 'documentation' },
+      },
+      {
+        path: 'ArrangeCourse',
+        component: () =>
+                    import('@/views/takeCourseManage/arrangeCourse'),
+        name: 'ArrangeCourse',
+        meta: { title: '排课', icon: 'documentation' },
+      },
+    ],
+  },
+  {
+    path: '/CourseManage',
+    component: Layout,
+    redirect: '/CourseManage/TakeCourse',
+    name: 'CourseManage',
+    meta: {
+      title: '课程管理',
+      icon: 'example',
+      roles: ['学生', '老师'],
+    },
+    children: [
+      {
+        path: 'TakeCourse',
+        component: () => import('@/views/courseManage/takeCourse'),
+        name: 'TakeCourse',
+        meta: {
+          title: '选课',
+          icon: 'tree-table',
+          roles: ['学生'],
+        },
+      },
+      {
+        path: 'MyStudentSyllabus',
+        component: () =>
+                    import('@/views/courseManage/myStudentSyllabus'),
+        name: 'MyStudentSyllabus',
+        meta: {
+          title: '我的课表',
+          icon: 'tree-table',
+          roles: ['学生'],
+        },
       },
     ],
   },

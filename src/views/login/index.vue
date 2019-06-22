@@ -1,14 +1,21 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <div class="bg-img"></div>
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h3 class="title">学生选课系统 - 登录</h3>
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="user"/>
         </span>
         <el-input
           ref="username"
@@ -23,7 +30,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="password"/>
         </span>
         <el-input
           :key="passwordType"
@@ -37,17 +44,21 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
 
       <div class="tips">
         <!-- <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span> -->
+        <span> password: any</span>-->
       </div>
-
     </el-form>
   </div>
 </template>
@@ -78,8 +89,12 @@ export default {
         password: 'admin',
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername },
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword },
+        ],
       },
       loading: false,
       passwordType: 'password',
@@ -109,12 +124,15 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -129,8 +147,8 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
+$bg: #283443;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -173,15 +191,27 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+
+  .bg-img {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-image: url("../../assets/gzhu_img.jpg");
+    background-size: cover;
+    background-position: center right;
+    opacity: .3;
+  }
 
   .login-form {
     position: relative;

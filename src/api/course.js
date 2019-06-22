@@ -99,3 +99,35 @@ export function deleteTakeCourseArrangement(data) {
     data,
   })
 }
+
+export function getPersonalTakeCourseRecords(params) {
+  return request({
+    url: '/personalTakeCourseRecords',
+    method: 'get',
+    params,
+  })
+}
+
+export function postPersonalTakeCourseRecords(data) {
+  return request({
+    url: '/personalTakeCourseRecords',
+    method: 'post',
+    data,
+  })
+}
+
+export function putPersonalTakeCourseRecords(data) {
+  return request({
+    url: '/personalTakeCourseRecords',
+    method: 'put',
+    data,
+  })
+}
+
+export function deletePersonalTakeCourseRecords(data) {
+  return request({
+    url: '/personalTakeCourseRecords',
+    method: 'delete',
+    data,
+  })
+}
