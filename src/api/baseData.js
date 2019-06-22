@@ -163,3 +163,67 @@ export function deleteTerm(data) {
     data,
   })
 }
+
+export function getAllTeachingBuildings(params) {
+  return request({
+    url: '/allTeachingBuildings',
+    method: 'get',
+    params,
+  })
+}
+
+export function postTeachingBuilding(data) {
+  return request({
+    url: '/teachingBuilding',
+    method: 'post',
+    data,
+  })
+}
+
+export function putTeachingBuilding(data) {
+  return request({
+    url: '/teachingBuilding',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteTeachingBuilding(data) {
+  return request({
+    url: '/teachingBuilding',
+    method: 'delete',
+    data,
+  })
+}
+
+export function getAllClassrooms(params) {
+  return request({
+    url: '/allClassrooms',
+    method: 'get',
+    params,
+  })
+}
+
+export function postClassroom(data) {
+  return request({
+    url: '/classroom',
+    method: 'post',
+    data,
+  })
+}
+
+export function putClassroom(data) {
+  return request({
+    url: '/classroom',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteClassroom(data) {
+  return request({
+    url: '/classroom',
+    method: 'delete',
+    data,
+  })
+}

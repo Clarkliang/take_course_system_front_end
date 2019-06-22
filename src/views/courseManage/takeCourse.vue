@@ -158,7 +158,7 @@
           :page-size="arrangementPaginationData.pageSize"
           :total="arrangementPaginationData.total"
           @size-change="arrangementHandleSizeChange"
-          @current-change="arrangement2HandleCurrentChange"
+          @current-change="arrangementHandleCurrentChange"
         ></el-pagination>
       </el-footer>
     </el-container>
@@ -389,7 +389,7 @@ export default {
       this.arrangementPaginationData.currentPage = 1
       await this.refreshStep2Data()
     },
-    async arrangement2HandleCurrentChange(val) {
+    async arrangementHandleCurrentChange(val) {
       this.arrangementPaginationData.currentPage = val
       await this.refreshStep2Data()
     },

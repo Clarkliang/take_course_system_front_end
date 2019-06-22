@@ -22,10 +22,10 @@
               <template v-else>{{ `第${scope.row.term.number}学期` }}</template>
             </template>
           </el-table-column>
-          <el-table-column prop="startTime" label="开始时间">
+          <el-table-column prop="startTime" label="选课开始时间">
             <template slot-scope="scope">{{ scope.row.startTime | parseTime }}</template>
           </el-table-column>
-          <el-table-column prop="endTime" label="结束时间">
+          <el-table-column prop="endTime" label="选课结束时间">
             <template slot-scope="scope">{{ scope.row.endTime | parseTime }}</template>
           </el-table-column>
           <el-table-column label="操作">
