@@ -82,9 +82,23 @@
               slot-scope="scope"
             >{{ `星期${maps.weekdayMap[scope.row.weekday]} 第${maps.numberMap[scope.row.courseTime.number]}大节` }}</template>
           </el-table-column>
+          <el-table-column label="上课地点">
+            <template slot-scope="scope">
+              <template
+                v-if="scope.row.arrangeCourse"
+              >{{ `${scope.row.arrangeCourse.classroom.teachingBuilding.name}${scope.row.arrangeCourse.classroom.number}` }}</template>
+              <template v-else>暂未排课</template>
+            </template>
+          </el-table-column>
           <el-table-column prop="action" label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="arrangeCourseBtnClick(scope)">排课</el-button>
+              <el-button
+                v-if="scope.row.arrangeCourse"
+                type="warning"
+                size="mini"
+                @click="updateArrangeCourseBtnClick(scope)"
+              >修改排课</el-button>
+              <el-button v-else type="primary" size="mini" @click="arrangeCourseBtnClick(scope)">排课</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -102,19 +116,117 @@
       </el-footer>
     </el-container>
     <!-- 第二步结束 -->
+    <!-- 排课对话框开始 -->
+    <el-dialog
+      title="排课"
+      :visible.sync="arrangeCourseDiag.visible"
+      v-loading="arrangeCourseDiag.loading"
+      @closed="arrangeCourseDiagClosed"
+    >
+      <div class="diag-form-box">
+        <el-form
+          ref="arrangeCourseForm"
+          label-width="80px"
+          :model="arrangeCourseDiag.form"
+          :rules="arrangeCourseDiag.rules"
+        >
+          <el-form-item label="教学楼" prop="teachingBuildingId">
+            <el-select
+              v-model="arrangeCourseDiag.form.teachingBuildingId"
+              filterable
+              placeholder="请选择教学楼"
+              @change="arrangeCourseTeachingBuildingChange"
+            >
+              <el-option
+                v-for="item in teachingBuildingData"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="课室" prop="classroomId">
+            <el-select v-model="arrangeCourseDiag.form.classroomId" filterable placeholder="请选择课室">
+              <el-option
+                v-for="item in classroomData"
+                :key="item.id"
+                :label="item.number"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="arrangeCourseDiag.visible = false">取 消</el-button>
+        <el-button type="primary" @click="arrangeCourseDiagConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 排课对话框结束 -->
+    <!-- 修改排课对话框开始 -->
+    <el-dialog
+      title="排课"
+      :visible.sync="updateArrangeCourseDiag.visible"
+      v-loading="updateArrangeCourseDiag.loading"
+      @closed="updateArrangeCourseDiagClosed"
+    >
+      <div class="diag-form-box">
+        <el-form
+          ref="updateArrangeCourseForm"
+          label-width="80px"
+          :model="updateArrangeCourseDiag.form"
+          :rules="updateArrangeCourseDiag.rules"
+        >
+          <el-form-item label="教学楼" prop="teachingBuildingId">
+            <el-select
+              v-model="updateArrangeCourseDiag.form.teachingBuildingId"
+              filterable
+              placeholder="请选择教学楼"
+              @change="updateArrangeCourseTeachingBuildingChange"
+            >
+              <el-option
+                v-for="item in teachingBuildingData"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="课室" prop="classroomId">
+            <el-select
+              v-model="updateArrangeCourseDiag.form.classroomId"
+              filterable
+              placeholder="请选择课室"
+            >
+              <el-option
+                v-for="item in classroomData"
+                :key="item.id"
+                :label="item.number"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="updateArrangeCourseDiag.visible = false">取 消</el-button>
+        <el-button type="primary" @click="updateArrangeCourseDiagConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改排课对话框结束 -->
   </div>
 </template>
 
 <script>
 import { parseTime } from '@/utils'
+import { getAllTeachingBuildings, getAllClassrooms } from '@/api/baseData'
 import {
   getAllTakeCourseEvents,
-  // postTakeCourseEvent,
-  // putTakeCourseEvent,
-  // deleteTakeCourseEvent,
-  // getAllCourses,
   getAllTakeCourseArrangements,
+  postArrangeCourse,
+  putArrangeCourse,
 } from '@/api/course'
+import { Promise } from 'q'
 
 export default {
   name: 'ArrangeCourse',
@@ -188,6 +300,57 @@ export default {
       arrangementFilterForm: {
         courseName: '',
       },
+      arrangeCourseDiag: {
+        loading: false,
+        visible: false,
+        form: {
+          teachingBuildingId: '',
+          classroomId: '',
+        },
+        rules: {
+          teachingBuildingId: [
+            {
+              required: true,
+              message: '请选择教学楼',
+              trigger: 'blur',
+            },
+          ],
+          classroomId: [
+            {
+              required: true,
+              message: '请选择课室',
+              trigger: 'blur',
+            },
+          ],
+        },
+      },
+      nowArrangementIndex: -1,
+      teachingBuildingData: [],
+      classroomData: [],
+      updateArrangeCourseDiag: {
+        loading: false,
+        visible: false,
+        form: {
+          teachingBuildingId: '',
+          classroomId: '',
+        },
+        rules: {
+          teachingBuildingId: [
+            {
+              required: true,
+              message: '请选择教学楼',
+              trigger: 'blur',
+            },
+          ],
+          classroomId: [
+            {
+              required: true,
+              message: '请选择课室',
+              trigger: 'blur',
+            },
+          ],
+        },
+      },
     }
   },
   async mounted() {
@@ -246,9 +409,14 @@ export default {
         const { data: response } = await getAllTakeCourseArrangements({
           page: this.arrangementPagination.currentPage,
           row: this.arrangementPagination.pageSize,
-          where: {
+          where: JSON.stringify({
             eventId: this.eventData[this.nowEventIndex].id,
-          },
+          }),
+          courseWhere: JSON.stringify({
+            name: {
+              $like: `%${this.arrangementFilterForm.courseName}%`,
+            },
+          }),
         })
         this.arrangementData = response.data.rows
         this.arrangementPagination.total = response.data.count
@@ -269,8 +437,12 @@ export default {
     },
     async step2BackBtnClick() {
       this.step = 1
+      this.arrangementFilterForm.courseName = ''
     },
-    async step2SearchBtnClick() {},
+    async step2SearchBtnClick() {
+      this.arrangementPagination.currentPage = 1
+      await this.refreshStep2Data()
+    },
     async handleArrangementListSizeChange(val) {
       this.arrangementPagination.pageSize = val
       this.arrangementPagination.currentPage = 1
@@ -280,7 +452,146 @@ export default {
       this.arrangementPagination.currentPage = val
       await this.refreshStep2Data()
     },
-    async arrangeCourseBtnClick(scope) {},
+    async refreshTeachingBuildingData() {
+      try {
+        const { data: response } = await getAllTeachingBuildings({
+          disablePagination: 1,
+        })
+        this.teachingBuildingData = response.data.rows
+        this.$message.success('获取教学楼数据成功！')
+      } catch (err) {
+        this.teachingBuildingData = []
+        if (err.data && err.data.errorMessage) {
+          this.$message.error(err.data.errorMessage)
+        } else {
+          this.$message.error('获取教学楼数据失败，请重试！')
+        }
+      }
+    },
+    async refreshClassroomData(teachingBuildingId) {
+      try {
+        const { data: response } = await getAllClassrooms({
+          where: JSON.stringify({
+            teachingBuildingId,
+          }),
+          order: JSON.stringify([['number', 'ASC']]),
+          disablePagination: 1,
+        })
+        this.classroomData = response.data.rows
+        this.$message.success('获取课室数据成功！')
+      } catch (err) {
+        this.classroomData = []
+        if (err.data && err.data.errorMessage) {
+          this.$message.error(err.data.errorMessage)
+        } else {
+          this.$message.error('获取课室数据失败，请重试！')
+        }
+      }
+    },
+    async arrangeCourseBtnClick(scope) {
+      this.nowArrangementIndex = scope.$index
+      this.loading = true
+      await this.refreshTeachingBuildingData()
+      this.loading = false
+      this.classroomData = []
+      this.arrangeCourseDiag.visible = true
+    },
+    arrangeCourseDiagClosed() {
+      this.$refs.arrangeCourseForm.resetFields()
+      this.classroomData = []
+    },
+    async arrangeCourseTeachingBuildingChange() {
+      const diag = this.arrangeCourseDiag
+      diag.loading = true
+      await this.refreshClassroomData(diag.form.teachingBuildingId)
+      diag.loading = false
+    },
+    arrangeCourseDiagConfirm() {
+      this.$refs.arrangeCourseForm.validate(async valid => {
+        if (!valid) {
+          return
+        }
+        this.arrangeCourseDiag.loading = true
+        try {
+          const arrangementId = this.arrangementData[this.nowArrangementIndex]
+            .id
+          const classroomId = this.arrangeCourseDiag.form.classroomId
+          await postArrangeCourse({
+            arrangementId,
+            classroomId,
+          })
+          this.arrangeCourseDiag.loading = false
+          this.arrangeCourseDiag.visible = false
+          await this.refreshStep2Data()
+          this.$message.success('排课成功！')
+        } catch (err) {
+          if (err.data && err.data.errorMessage) {
+            this.$message.error(err.data.errorMessage)
+          } else {
+            this.$message.error('排课失败，请重试！')
+          }
+        }
+        this.arrangeCourseDiag.loading = false
+      })
+    },
+    async updateArrangeCourseBtnClick(scope) {
+      this.nowArrangementIndex = scope.$index
+
+      const form = this.updateArrangeCourseDiag.form
+      const classroom = this.arrangementData[this.nowArrangementIndex]
+        .arrangeCourse.classroom
+      const teachingBuildingId = classroom.teachingBuildingId
+      this.nowArrangementIndex = scope.$index
+      this.loading = true
+      await Promise.all([
+        this.refreshTeachingBuildingData(),
+        this.refreshClassroomData(teachingBuildingId),
+      ])
+      form.teachingBuildingId = teachingBuildingId
+      form.classroomId = classroom.id
+      this.loading = false
+      this.updateArrangeCourseDiag.visible = true
+    },
+    updateArrangeCourseDiagClosed() {
+      this.$refs.updateArrangeCourseForm.resetFields()
+      this.classroomData = []
+    },
+    async updateArrangeCourseTeachingBuildingChange() {
+      const diag = this.updateArrangeCourseDiag
+      diag.loading = true
+      await this.refreshClassroomData(diag.form.teachingBuildingId)
+      diag.loading = false
+    },
+    updateArrangeCourseDiagConfirm() {
+      this.$refs.updateArrangeCourseForm.validate(async valid => {
+        if (!valid) {
+          return
+        }
+        this.updateArrangeCourseDiag.loading = true
+        try {
+          const id = this.arrangementData[this.nowArrangementIndex]
+            .arrangeCourse.id
+          const classroomId = this.updateArrangeCourseDiag.form.classroomId
+          await putArrangeCourse({
+            id,
+            value: JSON.stringify({
+              classroomId,
+            }),
+          })
+          this.updateArrangeCourseDiag.loading = false
+          this.updateArrangeCourseDiag.visible = false
+          await this.refreshStep2Data()
+          this.$message.success('修改排课成功！')
+        } catch (err) {
+          if (err.data && err.data.errorMessage) {
+            this.$message.error(err.data.errorMessage)
+          } else {
+            this.$message.error('修改排课失败，请重试！')
+          }
+        }
+        this.updateArrangeCourseDiag.loading = false
+      })
+    },
   },
 }
 </script>

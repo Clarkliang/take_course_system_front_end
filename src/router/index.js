@@ -261,7 +261,7 @@ export const asyncRoutes = [
   {
     path: '/CourseManage',
     component: Layout,
-    redirect: '/CourseManage/TakeCourse',
+    // redirect: '/CourseManage/TakeCourse',
     name: 'CourseManage',
     meta: {
       title: '课程管理',
@@ -287,6 +287,39 @@ export const asyncRoutes = [
         meta: {
           title: '我的课表',
           icon: 'tree-table',
+          roles: ['学生'],
+        },
+      },
+      {
+        path: 'MyTeacherSyllabus',
+        component: () =>
+                    import('@/views/courseManage/myTeacherSyllabus'),
+        name: 'MyTeacherSyllabus',
+        meta: {
+          title: '我的课表',
+          icon: 'tree-table',
+          roles: ['老师'],
+        },
+      },
+      {
+        path: 'ScoreManage',
+        component: () =>
+                    import('@/views/courseManage/scoreManage'),
+        name: 'ScoreManage',
+        meta: {
+          title: '分数管理',
+          icon: 'edit',
+          roles: ['老师'],
+        },
+      },
+      {
+        path: 'MyTakeCourseRecord',
+        component: () =>
+                    import('@/views/courseManage/myTakeCourseRecord'),
+        name: 'MyTakeCourseRecord',
+        meta: {
+          title: '我的选课记录',
+          icon: 'list',
           roles: ['学生'],
         },
       },

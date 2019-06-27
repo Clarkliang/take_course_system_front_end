@@ -77,10 +77,10 @@
 
 <script>
 import { getAllSchoolYears, getAllTerms } from '@/api/baseData'
-import { getPersonalTakeCourseRecords } from '@/api/course'
+import { getAllTakeCourseArrangements } from '@/api/course'
 
 export default {
-  name: 'MyStudentSyllabus',
+  name: 'myTeacherSyllabus',
   data() {
     return {
       maps: {
@@ -137,7 +137,7 @@ export default {
       },
       schoolYearData: [],
       termData: [],
-      recordData: [],
+      arrangementData: [],
     }
   },
   computed: {
@@ -164,8 +164,8 @@ export default {
         })
         return prev
       }, [])
-      this.recordData.forEach(item => {
-        const arrangement = item.takeCourseArrangement
+      this.arrangementData.forEach(item => {
+        const arrangement = item
         const name = arrangement.course.name
         const weekday = arrangement.weekday
         const courseTimeNumber = arrangement.courseTime.number
@@ -185,7 +185,7 @@ export default {
 
           data[courseTimeNumber - 1][`weekday${weekday}`] = h('div', [
             h('div', { style: courseNameStyle }, name),
-            h('div', { style: teacherNameStyle }, teacherName),
+            // h('div', { style: teacherNameStyle }, teacherName),
             h(
               'div',
               {
@@ -199,7 +199,7 @@ export default {
         } else {
           data[courseTimeNumber - 1][`weekday${weekday}`] = h('div', [
             h('div', { style: courseNameStyle }, name),
-            h('div', { style: teacherNameStyle }, teacherName),
+            // h('div', { style: teacherNameStyle }, teacherName),
           ])
         }
       })
@@ -255,33 +255,37 @@ export default {
       await this.refershTermData()
       this.loading = false
     },
-    async refreshRecordData() {
+    async refreshArrangementData() {
       try {
-        const { data: response } = await getPersonalTakeCourseRecords({
-          takeCourseWhere: JSON.stringify({
+        const { data: response } = await getAllTakeCourseArrangements({
+          takeCourseEventWhere: JSON.stringify({
             termId: this.filterForm.termId,
+          }),
+          teacherWhere: JSON.stringify({
+            id: this.$store.state.user.userInfo.teacherInfo.id,
           }),
           disablePagination: 1,
         })
-        this.recordData = response.data.rows
-        this.$message.success('刷新选课数据成功！')
+        // this.$store
+        this.arrangementData = response.data.rows
+        this.$message.success('刷新课程安排数据成功！')
       } catch (err) {
-        this.recordData = []
+        this.arrangementData = []
         if (err.data && err.data.errorMessage) {
           this.$message.error(err.data.errorMessage)
         } else {
-          this.$message.error('刷新选课数据失败，请重试！')
+          this.$message.error('刷新课程安排数据失败，请重试！')
         }
       }
     },
     async termSelectChange() {
       this.loading = true
-      await this.refreshRecordData()
+      await this.refreshArrangementData()
       this.loading = false
     },
     async searchData() {
       this.loading = true
-      await this.refreshRecordData()
+      await this.refreshArrangementData()
       this.loading = false
     },
   },

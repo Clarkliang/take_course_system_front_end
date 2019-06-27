@@ -78,7 +78,7 @@ service.interceptors.response.use(
     // 401
     if (res.code === 401) {
       // to re-login
-      MessageBox.confirm('由于长时间停留在此页面未作任何操作，您的登录状态已经被取消！<br/>您可选择重新登录或继续停留在此页面', {
+      MessageBox.confirm('由于长时间停留在此页面未作任何操作，您的登录状态已经被取消！您可选择重新登录或继续停留在此页面', {
         confirmButtonText: '重新登录',
         cancelButtonText: '停留在此页',
         type: 'warning',

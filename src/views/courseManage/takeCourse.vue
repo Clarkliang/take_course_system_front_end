@@ -138,12 +138,21 @@
             </el-table-column>
             <el-table-column prop="action" label="操作">
               <template slot-scope="scope">
-                <el-button
-                  type="success"
-                  size="mini"
-                  :disabled="!step2PageRenderData.isTakingCourse"
-                  @click="takeCourseBtnClick(scope)"
-                >选课</el-button>
+                <template v-if="!recordData.find(item => item.arrangementId === scope.row.id)">
+                  <el-button
+                    type="success"
+                    size="mini"
+                    :disabled="!step2PageRenderData.isTakingCourse"
+                    @click="takeCourseBtnClick(scope)"
+                  >选课</el-button>
+                </template>
+                <template v-else>
+                  <el-button
+                    type="success"
+                    size="mini"
+                    :disabled="true"
+                  >已选</el-button>
+                </template>
               </template>
             </el-table-column>
           </el-table>

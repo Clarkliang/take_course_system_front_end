@@ -131,3 +131,43 @@ export function deletePersonalTakeCourseRecords(data) {
     data,
   })
 }
+
+export function postArrangeCourse(data) {
+  return request({
+    url: '/arrangeCourse',
+    method: 'post',
+    data,
+  })
+}
+
+export function putArrangeCourse(data) {
+  return request({
+    url: '/arrangeCourse',
+    method: 'put',
+    data,
+  })
+}
+
+export function deleteArrangeCourse(data) {
+  return request({
+    url: '/arrangeCourse',
+    method: 'delete',
+    data,
+  })
+}
+
+export function getStudentTakeCourseRecords(params) {
+  return request({
+    url: '/studentTakeCourseRecords',
+    method: 'get',
+    params,
+  })
+}
+
+export function putAllStudentTakeCourseScores(data) {
+  return request({
+    url: '/allStudentTakeCourseScores',
+    method: 'put',
+    data,
+  })
+}
